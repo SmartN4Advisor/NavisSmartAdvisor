@@ -46,11 +46,12 @@ public class N4Controller {
 
         // Invoke Scikit-learn http entry point.  Getting a prediction may take many seconds.  Let's get the
         // prediction right now before Alexa/android request for it.
-        String predictionUrl = "http://heroku.com/navis-machine-learning?" + "cpu=10&" + "memory=256";
+        String predictionUrl = "https://navis-sklearn-advisor.herokuapp.com/get_node_health_advice?f1=0&f2=0.8&f3=0&f4=0.5&f5=0.5&f6=0.5";
         RestTemplate restTemplate = new RestTemplate();
-        //ResponseEntity<Prediction> response = restTemplate.getForEntity(predictionUrl, Prediction.class);
-        //latestPrediction = response.getBody();
-        //System.out.println(response.getStatusCode());
+        ResponseEntity<String> response = restTemplate.getForEntity(predictionUrl, String.class);
+        latestPrediction = new Prediction();
+        latestPrediction.setPrediction(response.getBody());
+        System.out.println(response.getStatusCode());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
