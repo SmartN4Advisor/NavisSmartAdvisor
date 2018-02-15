@@ -61,9 +61,8 @@ public class N4Controller {
                 "&f5=" + (queueLog.getDeqRate() >= queueLog.getEnqRate() ? 1 : 0) +
                 "&f6=" + queueLog.getInFlight() / totalExpectedConsumerCount*2;
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(predictionUrl, String.class);
-        latestPrediction = new Prediction();
-        latestPrediction.setPrediction(response.getBody());
+        ResponseEntity<Prediction> response = restTemplate.getForEntity(predictionUrl, Prediction.class);
+        latestPrediction = response.getBody();
         System.out.println(response.getStatusCode());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -104,11 +103,8 @@ public class N4Controller {
     @GetMapping("/getRecommendation")
     public String getRecommendation() {
         // Quick response by returning the latest calculated prediction.
-        if (latestPrediction == null) {
-            latestPrediction = new Prediction();
-            latestPrediction.setPrediction("Please restart the center node.");
-        }
-        return latestPrediction.getPrediction();
+        return "The result of the system analysis is " +  latestPrediction.getSystemHealthAdvisor() +
+                ".  The result of the queue analysis " + latestPrediction.getQueueHealthAdvisor();
     }
 
 }

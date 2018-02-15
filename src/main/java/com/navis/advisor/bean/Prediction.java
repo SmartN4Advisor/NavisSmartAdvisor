@@ -4,13 +4,22 @@ package com.navis.advisor.bean;
  * This POJO represents the prediction response from scikit-learn app
  */
 public class Prediction {
-    String prediction;
+    String queueHealthAdvisor;
+    String systemHealthAdvisor;
 
-    public String getPrediction() {
-        return prediction;
+    public String getQueueHealthAdvisor() {
+        return queueHealthAdvisor;
     }
 
-    public void setPrediction(String prediction) {
-        this.prediction = prediction;
+    public void setQueueHealthAdvisor(String queueHealthAdvisor) {
+        this.queueHealthAdvisor = queueHealthAdvisor;
+    }
+
+    public String getSystemHealthAdvisor() {
+        return systemHealthAdvisor;
+    }
+
+    public void setSystemHealthAdvisor(String systemHealthAdvisor) {
+        this.systemHealthAdvisor = systemHealthAdvisor;
     }
 }
