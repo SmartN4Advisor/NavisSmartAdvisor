@@ -1,7 +1,6 @@
 package com.navis.advisor.controller;
 
 import com.navis.advisor.bean.N4HealthLog;
-import com.navis.advisor.bean.Prediction;
 import com.navis.advisor.bean.QueueLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,6 +60,7 @@ public class N4Controller {
                 "&f4=" + (queueLog.getConsumerCount() / totalExpectedConsumerCount) +
                 "&f5=" + (queueLog.getDeqRate() >= queueLog.getEnqRate() ? 1 : 0) +
                 "&f6=" + queueLog.getInFlight() / totalExpectedConsumerCount*2;
+        System.out.println("URL: " + predictionUrl);
         RestTemplate restTemplate = new RestTemplate();
 //        ResponseEntity<Prediction> response = restTemplate.getForEntity(predictionUrl, Prediction.class);
 //        latestPrediction = response.getBody();
