@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class N4Controller {
@@ -63,7 +64,7 @@ public class N4Controller {
         RestTemplate restTemplate = new RestTemplate();
 //        ResponseEntity<Prediction> response = restTemplate.getForEntity(predictionUrl, Prediction.class);
 //        latestPrediction = response.getBody();
-        ResponseEntity<String> response = restTemplate.getForEntity(predictionUrl, String.class);
+        ResponseEntity<Map> response = restTemplate.getForEntity(predictionUrl, Map.class);
         latestPrediction = new Prediction();
         latestPrediction.setQueueHealthAdvisor("Median");
         latestPrediction.setSystemHealthAdvisor("OK");
