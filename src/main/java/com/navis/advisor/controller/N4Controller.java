@@ -107,8 +107,8 @@ public class N4Controller {
     @GetMapping("/getRecommendation")
     public String getRecommendation() {
         // Quick response by returning the latest calculated prediction.
-        return "The result of the system analysis is " +  latestPrediction.get("SystemHealthAdvisor") +
-                ".  The result of the queue analysis " + latestPrediction.get("QueueHealthAdvisor");
+        return "The result of the system analysis is: " +  latestPrediction.get("SystemHealthAdvisor") +
+                ".  The result of the queue analysis is: " + latestPrediction.get("QueueHealthAdvisor") + ".";
     }
 
 }
