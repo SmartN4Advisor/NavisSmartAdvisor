@@ -45,7 +45,7 @@ public class AdvisorApplication {
 		});
 		logEntries.add(new N4HealthLog() {
 			{
-				setCpu(10L);
+				setCpu(20L);
 				setFreeMemory(7033L);
 				setAmqMemoryPercentUsage(0L);
 				setAmqStorePercentUsage(0L);
