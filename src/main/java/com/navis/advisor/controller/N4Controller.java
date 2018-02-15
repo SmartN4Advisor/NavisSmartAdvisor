@@ -2,6 +2,7 @@ package com.navis.advisor.controller;
 
 import com.navis.advisor.bean.N4HealthLog;
 import com.navis.advisor.bean.Prediction;
+import com.navis.advisor.bean.QueueLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,10 +44,22 @@ public class N4Controller {
 
         System.out.println("Received from N4 Center Node: " + inHealthLog);
         logEntries.add(inHealthLog);
+        float totalExpectedConsumerCount = 2;
 
+        final QueueLog queueLog = inHealthLog.getQueueLogs()
+                .stream()
+                .filter(q -> q.getQueueName().startsWith("bridge."))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Did not find bridge queue!"));
         // Invoke Scikit-learn http entry point.  Getting a prediction may take many seconds.  Let's get the
         // prediction right now before Alexa/android request for it.
-        String predictionUrl = "https://navis-sklearn-advisor.herokuapp.com/get_node_health_advice?f1=0&f2=0.8&f3=0&f4=0.5&f5=0.5&f6=0.5";
+        String predictionUrl = "https://navis-sklearn-advisor.herokuapp.com/get_node_health_advice?" +
+                "f1=" + inHealthLog.getCpu() +
+                "&f2=" + (inHealthLog.getFreeMemory() / (float) inHealthLog.getTotalMemory()) +
+                "&f3=" + ((queueLog.getQueueSize() > 2000) ? 1 : 0) +
+                "&f4=" + (queueLog.getConsumerCount() / totalExpectedConsumerCount) +
+                "&f5=" + (queueLog.getDeqRate() >= queueLog.getEnqRate() ? 1 : 0) +
+                "&f6=" + queueLog.getInFlight() / totalExpectedConsumerCount*2;
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(predictionUrl, String.class);
         latestPrediction = new Prediction();
