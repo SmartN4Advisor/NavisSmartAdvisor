@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 public class N4Controller {
-    Prediction latestPrediction;
+    Map latestPrediction;
 
     // wired from the bean in AdvisorApplication
     @Autowired
@@ -65,9 +65,7 @@ public class N4Controller {
 //        ResponseEntity<Prediction> response = restTemplate.getForEntity(predictionUrl, Prediction.class);
 //        latestPrediction = response.getBody();
         ResponseEntity<Map> response = restTemplate.getForEntity(predictionUrl, Map.class);
-        latestPrediction = new Prediction();
-        latestPrediction.setQueueHealthAdvisor("Median");
-        latestPrediction.setSystemHealthAdvisor("OK");
+        latestPrediction = response.getBody();
         System.out.println("Response from ML: " + response.getBody());
         System.out.println(response.getStatusCode());
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -109,8 +107,8 @@ public class N4Controller {
     @GetMapping("/getRecommendation")
     public String getRecommendation() {
         // Quick response by returning the latest calculated prediction.
-        return "The result of the system analysis is " +  latestPrediction.getSystemHealthAdvisor() +
-                ".  The result of the queue analysis " + latestPrediction.getQueueHealthAdvisor();
+        return "The result of the system analysis is " +  latestPrediction.get("SystemHealthAdvisor") +
+                ".  The result of the queue analysis " + latestPrediction.get("QueueHealthAdvisor");
     }
 
 }
