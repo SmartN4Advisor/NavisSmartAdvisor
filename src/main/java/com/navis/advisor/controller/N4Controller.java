@@ -61,8 +61,13 @@ public class N4Controller {
                 "&f5=" + (queueLog.getDeqRate() >= queueLog.getEnqRate() ? 1 : 0) +
                 "&f6=" + queueLog.getInFlight() / totalExpectedConsumerCount*2;
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Prediction> response = restTemplate.getForEntity(predictionUrl, Prediction.class);
-        latestPrediction = response.getBody();
+//        ResponseEntity<Prediction> response = restTemplate.getForEntity(predictionUrl, Prediction.class);
+//        latestPrediction = response.getBody();
+        ResponseEntity<String> response = restTemplate.getForEntity(predictionUrl, String.class);
+        latestPrediction = new Prediction();
+        latestPrediction.setQueueHealthAdvisor("Median");
+        latestPrediction.setSystemHealthAdvisor("OK");
+        System.out.println("Response from ML: " + response.getBody());
         System.out.println(response.getStatusCode());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
