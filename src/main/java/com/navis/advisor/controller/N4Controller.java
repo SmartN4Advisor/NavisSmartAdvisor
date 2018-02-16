@@ -26,7 +26,7 @@ public class N4Controller {
      *
      * http://localhost:8080
      *
-     * @return String
+     * @return String0
      */
     @GetMapping("/")
     public String root() {
@@ -94,7 +94,10 @@ public class N4Controller {
     @GetMapping("/getHealthStatus")
     public List<String> getHealthStatus() {
         // TODO prepare current status about the latest CPU load, Memory, queue Size, etc
-        return Arrays.asList("CPU is 10%", "Memory is 1 GB", "No queue sizes");
+        N4HealthLog log = logEntries.get(logEntries.size()-1);
+        return Arrays.asList("CPU is " + log.getCpu() + "%",
+                "Free Memory is " + log.getFreeMemory() + " GB",
+                "ActiveMQ Memory Percentage is " + log.getAmqMemoryPercentUsage());
     }
 
     /**
