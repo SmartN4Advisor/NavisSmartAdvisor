@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 public class N4Controller {
-    Map latestPrediction;
+    Map<String, String> latestPrediction;
 
     // wired from the bean in AdvisorApplication
     @Autowired
@@ -110,6 +110,10 @@ public class N4Controller {
     @GetMapping("/getRecommendation")
     public String getRecommendation() {
         // Quick response by returning the latest calculated prediction.
+        if ("Good".compareToIgnoreCase(latestPrediction.get("SystemHealthAdvisor"))==0 &&
+                "Good".compareToIgnoreCase(latestPrediction.get("QueueHealthAdvisor"))==0) {
+            return "N4 is currently running and stable";
+        }
         return "The result of the system analysis is: " +  latestPrediction.get("SystemHealthAdvisor") +
                 ".  The result of the queue analysis is: " + latestPrediction.get("QueueHealthAdvisor") + ".";
     }
